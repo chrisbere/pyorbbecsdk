@@ -40,6 +40,9 @@ jobs:
     - name: Build
       run: cmake --build build --config Release
 
+    - name: Install built binaries
+      run: cmake --install build
+
     - name: Build Python Wheel
       run: python setup.py bdist_wheel
 
