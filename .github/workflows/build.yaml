@@ -28,16 +28,9 @@ jobs:
       shell: pwsh
       run: |
         curl -L -o sdk.zip "https://github.com/orbbec/OrbbecSDK_v2/releases/download/v2.4.8/OrbbecSDK_v2.4.8_202507032159_ec8e346_win_x64.zip"
-        if (-Not (Test-Path "sdk")) {
-          New-Item -ItemType Directory -Path "sdk"
-        }
-        Expand-Archive -Path sdk.zip -DestinationPath sdk
     
-        # Optionaler Fix, falls Remove-Item irgendwo automatisch ausgeführt wird:
-        $dllPath = "sdk/bin/concrt140.dll"
-        if (-Not (Test-Path $dllPath)) {
-          New-Item -ItemType File -Path $dllPath | Out-Null
-        }
+        # Entpacken mit 7-Zip, damit DLLs erhalten bleiben
+        & "C:\Program Files\7-Zip\7z.exe" x sdk.zip -osdk -y
 
 
     - name: Configure CMake
