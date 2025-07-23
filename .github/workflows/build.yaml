@@ -18,11 +18,12 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-
+    
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pybind11==2.11.0 pybind11-global==2.11.0 wheel
+        pip install setuptools pybind11==2.11.0 pybind11-global==2.11.0 wheel
+
 
     - name: Download Orbbec SDK v2.4.8
       shell: pwsh
