@@ -1,18 +1,18 @@
-name: Build
+name: Build pyorbbecsdk
 
 on:
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
     strategy:
       matrix:
-        os: [windows-latest]  # windows only
         python-version: [3.12]
-    
+
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
@@ -27,17 +27,12 @@ jobs:
     - name: Download Orbbec SDK v2.4.8
       shell: pwsh
       run: |
-        curl -L -o sdk.zip https://github.com/orbbec/OrbbecSDK_v2/releases/download/v2.4.8/OrbbecSDK_Windows_x64_v2.4.8.zip
+        curl -L -o sdk.zip "https://github.com/orbbec/OrbbecSDK_v2/releases/download/v2.4.8/OrbbecSDK_v2.4.8_202507032159_ec8e346_win_x64.zip"
         if (-Not (Test-Path "sdk")) { New-Item -ItemType Directory -Path "sdk" }
         Expand-Archive -Path sdk.zip -DestinationPath sdk
 
-
-
     - name: Configure CMake
-      run: |
-        cmake -S . -B build `
-              -DPYBIND11_PYTHON_VERSION=${{ matrix.python-version }} `
-              -DOrbbecSDK_DIR="${{ github.workspace }}\\sdk"
+      run: cmake -S . -B build -DPYBIND11_PYTHON_VERSION=${{ matrix.python-version }} -DOrbbecSDK_DIR="${{ github.workspace }}\\sdk"
 
     - name: Build
       run: cmake --build build --config Release
@@ -48,5 +43,5 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: python-wheel-${{ matrix.os }}-${{ matrix.python-version }}
+        name: pyorbbecsdk-win-${{ matrix.python-version }}
         path: dist/*.whl
