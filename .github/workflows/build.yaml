@@ -29,7 +29,8 @@ jobs:
       run: |
         curl -L -o sdk.zip https://github.com/orbbec/OrbbecSDK_v2/releases/download/v2.4.8/OrbbecSDK_Windows_x64_v2.4.8.zip
         if (-Not (Test-Path "sdk")) { New-Item -ItemType Directory -Path "sdk" }
-        tar -xf sdk.zip -C sdk
+        Expand-Archive -Path sdk.zip -DestinationPath sdk
+
 
 
     - name: Configure CMake
