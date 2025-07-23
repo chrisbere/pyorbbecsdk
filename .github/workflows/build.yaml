@@ -2,11 +2,6 @@ name: Build
 
 on:
   workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Tag to build'
-        required: true
-        default: 'main'
 
 jobs:
   build:
@@ -18,8 +13,6 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
-      with:
-        ref: ${{ github.event.inputs.tag }}
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
