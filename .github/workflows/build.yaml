@@ -25,10 +25,12 @@ jobs:
         pip install pybind11==2.11.0 pybind11-global==2.11.0 wheel
 
     - name: Download Orbbec SDK v2.4.8
+      shell: pwsh
       run: |
         curl -L -o sdk.zip https://github.com/orbbec/OrbbecSDK_v2/releases/download/v2.4.8/OrbbecSDK_Windows_x64_v2.4.8.zip
-        mkdir sdk
+        if (-Not (Test-Path "sdk")) { New-Item -ItemType Directory -Path "sdk" }
         tar -xf sdk.zip -C sdk
+
 
     - name: Configure CMake
       run: |
